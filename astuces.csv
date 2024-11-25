@@ -1,0 +1,9 @@
+Domaine;Code CIM;Commentaires
+Brûlure;T23_ + T31_;Coder en DP le degré et en DAS la superficie
+Ténosynovite;"Ténosynovite infectieuse : M65.1, Ténosinovite autre : M65.8";"Si Bactério négative et ténosynovite authentifiée par le médecin, coder ""ténosynovite autre"""
+Fracture sur matériel;M96.6;Si la fracture a lieu sur le même membre où se situe le matériel
+Maintien à domicile impossible (MADI);Z74.2;En DP si c'est le motif d'hospitalisation.
+Astuce5;Astuce5;Astuce5
+Astuce6;Astuce6;Astuce6
+Astuce7;Astuce7;Astuce7
+Astuce8;Astuce8;Astuce8

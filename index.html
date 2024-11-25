@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affichage CSV avec Recherche</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #dfe6e9;
+        }
+        td {
+            color: #555;
+        }
+    </style>
+    
+</head>
+<body>
+
+<h1>Astuces de codage</h1>
+<input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Rechercher...">
+<table id="dataTable">
+    <thead>
+        <tr id="tableHeader"></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+    // Charger automatiquement le fichier CSV au chargement de la page
+    document.addEventListener("DOMContentLoaded", loadCSV);
+
+    function loadCSV() {
+        fetch('astuces.csv')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors du chargement du fichier CSV');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Séparation des lignes et colonnes avec le séparateur ;
+                const rows = data.trim().split('\n').map(row => row.split(';'));
+                loadTableData(rows);
+            })
+            .catch(error => console.error('Erreur:', error));
+    }
+
+    // Fonction pour insérer les données dans le tableau HTML
+    function loadTableData(data) {
+    const tableHeader = document.getElementById("tableHeader");
+    const tableBody = document.getElementById("tableBody");
+
+    // Créer l'en-tête du tableau
+    const headers = data[0];
+    headers.forEach(headerText => {
+        const th = document.createElement("th");
+        th.textContent = headerText;
+        tableHeader.appendChild(th);
+    });
+
+    // Créer les lignes du tableau
+    data.slice(1).forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(cellText => {
+            const td = document.createElement("td");
+            // Convertir les retours à la ligne en balises <br>
+            td.innerHTML = cellText.replace(/\n/g, '<br>');
+            tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+    });
+}
+
+    // Fonction pour filtrer les résultats en fonction des mots-clés
+    function filterTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toLowerCase();
+        const rows = document.getElementById("dataTable").getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        }
+    }
+</script>
+
+</body>
+</html>
